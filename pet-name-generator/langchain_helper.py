@@ -34,7 +34,7 @@ def langchain_agent():
     )
     
     result = agent.run(
-        "What is a simple way to explain how the internet works? Can you tell me the average length of a fiber optics cable that's used for the internet?"
+        "Could you ELI5 how the internet works? Please explain in a very simple way using every day concepts."
     )
 
     print(result)
