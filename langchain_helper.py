@@ -1,6 +1,7 @@
 from langchain.llms.openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from langchain.agents import load_tools, initialize_agent, AgentType
 from dotenv import load_dotenv
 
 # loads .env file to get the environmental variables without having to hard code here
@@ -22,7 +23,24 @@ def generate_pet_name(animal_type, pet_color):
     response = name_chain({'animal_type': animal_type, 'pet_color': pet_color})
     return response
 
+def langchain_agent():
+    llm = OpenAI(temperature=0.5)
+    tools = load_tools(["wikipedia", "llm-math"], llm=llm)
+    agent = initialize_agent(
+        tools,
+        llm,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        verbose=True
+    )
+    
+    result = agent.run(
+        "What is a simple way to explain how the internet works? Can you tell me the average length of a fiber optics cable that's used for the internet?"
+    )
+
+    print(result)
+
 if __name__ == "__main__":
-    print(generate_pet_name("cow", "purple"))
+    # print(generate_pet_name("cow", "purple"))
+    langchain_agent()
 
   
